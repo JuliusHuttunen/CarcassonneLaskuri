@@ -4,7 +4,7 @@ import * as SQLite from 'expo-sqlite';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
 
-export default function GreenPoints({ navigation, route }) {
+export default function RedPoints({ navigation, route }) {
 
     const db = SQLite.openDatabase('laskuri.db');
     const [player, setPlayer] = useState([]);
@@ -23,7 +23,7 @@ export default function GreenPoints({ navigation, route }) {
 
     useEffect(() => {
         db.transaction(tx => {
-            tx.executeSql('select * from greenpoints order by id desc;', [], (_, { rows }) =>
+            tx.executeSql('select * from redpoints order by id desc;', [], (_, { rows }) =>
                 setPlayer(rows._array)
             );
         }, null, updateList, updateScore);
@@ -31,16 +31,16 @@ export default function GreenPoints({ navigation, route }) {
 
     const saveTown = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
-                ['Kaupunki', parseInt(scoreTown * 2), 'green']);
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupunki', parseInt(scoreTown * 2), 'red']);
         }, null, updateList
         )
     }
 
     const saveInn = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
-                ['Kievaritie', parseInt(scoreInn * 2), 'green']);
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Kievaritie', parseInt(scoreInn * 2), 'red']);
         }, null, updateList
         )
         setKievariVisible(!kievariVisible);
@@ -48,24 +48,24 @@ export default function GreenPoints({ navigation, route }) {
 
     const saveRoad = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
-                ['Tie', parseInt(scoreRoad), 'green']);
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Tie', parseInt(scoreRoad), 'red']);
         }, null, updateList
         )
     }
 
     const saveMonastery = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
-                ['Luostari', parseInt(scoreMonastery), 'green']);
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Luostari', parseInt(scoreMonastery), 'red']);
         }, null, updateList
         )
     }
 
     const saveCathedral = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
-                ['Suurkatedraali', parseInt(scoreCathedral * 3), 'green']);
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Suurkatedraali', parseInt(scoreCathedral * 3), 'red']);
         }, null, updateList
         )
         setKirkkoVisible(!kirkkoVisible);
@@ -74,14 +74,14 @@ export default function GreenPoints({ navigation, route }) {
     const deleteItem = (id) => {
         db.transaction(
             tx => {
-                tx.executeSql(`delete from greenpoints where id = ?;`, [id]);
+                tx.executeSql(`delete from redpoints where id = ?;`, [id]);
             }, null, updateList
         )
     }
 
     const updateList = () => {
         db.transaction(tx => {
-            tx.executeSql('select * from greenpoints order by id desc;', [], (_, { rows }) =>
+            tx.executeSql('select * from redpoints order by id desc;', [], (_, { rows }) =>
                 setPlayer(rows._array)
             );
         }, null, updateScore
@@ -90,7 +90,7 @@ export default function GreenPoints({ navigation, route }) {
 
     const updateScore = () => {
         db.transaction(tx => {
-            tx.executeSql('select sum(score) as finalpoints from greenpoints;', [], (_, { rows }) =>
+            tx.executeSql('select sum(score) as finalpoints from redpoints;', [], (_, { rows }) =>
                 setFinalScore(rows.item(0).finalpoints)
             );
         }, null, updatePlayer
@@ -181,7 +181,7 @@ export default function GreenPoints({ navigation, route }) {
     const updatePlayer = () => {
         if (!finalScore == "0") {
             db.transaction(tx => {
-                tx.executeSql('update players set score = ? where color="green";',
+                tx.executeSql('update players set score = ? where color="red";',
                     [finalScore]);
             }
             )
@@ -189,7 +189,7 @@ export default function GreenPoints({ navigation, route }) {
         else {
             {
                 db.transaction(tx => {
-                    tx.executeSql('update players set score = ? where color="green";',
+                    tx.executeSql('update players set score = ? where color="red";',
                         [0]);
                 }
                 )
@@ -203,7 +203,7 @@ export default function GreenPoints({ navigation, route }) {
                 style={{
                     height: 1,
                     width: "100%",
-                    backgroundColor: "black"
+                    backgroundColor: "red"
                 }}
             />
         );
@@ -229,7 +229,7 @@ export default function GreenPoints({ navigation, route }) {
             source={require("../img/starttile1_edit_blur.jpg")}>
             <View style={styles.pointcontainer}>
                 <View style={styles.featureWrapper}>
-                    <Text style={styles.pointsheader}>Vihreä</Text>
+                    <Text style={styles.pointsheader}>Punainen</Text>
                     <View style={styles.playerFeatureWrapper}>
                         <Image style={styles.city} source={require("../img/city.png")} />
                         <TextInput style={styles.playerinput} keyboardType="numeric" min="0" placeholder='Laattojen määrä:' onChangeText={(scoreTown) => setScoreTown(scoreTown)}
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         fontSize: 30,
         fontFamily: 'Fondamento_400Regular',
-        color: "#005b1c",
+        color: "#c80000",
         textAlign: "center"
     },
 
@@ -387,10 +387,10 @@ const styles = StyleSheet.create({
     },
     buttonOpen: {
         margin: 5,
-        backgroundColor: "#005b1c",
+        backgroundColor: "#c80000",
     },
     buttonClose: {
-        backgroundColor: "#005b1c",
+        backgroundColor: "#c80000",
         margin: 5
     },
     textStyle: {

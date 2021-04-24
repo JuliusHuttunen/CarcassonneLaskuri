@@ -8,28 +8,15 @@ import ExpansionScreen from "./components/ExpansionScreen";
 import Main from "./components/Main";
 import BluePoints from "./components/BluePoints";
 import GreenPoints from "./components/GreenPoints";
+import BlackPoints from "./components/BlackPoints";
+import RedPoints from "./components/RedPoints";
+import YellowPoints from "./components/YellowPoints";
+import WildPoints from "./components/WildPoints";
+import FinalScores from "./components/FinalScores";
 
 const Stack = createStackNavigator();
 
-function BlackPoints({ navigation }) {
-  return (
-    <View></View>
-  )
-}
-
-function RedPoints({ navigation }) {
-  return (
-    <View></View>
-  )
-}
-
-function YellowPoints({ navigation }) {
-  return (
-    <View></View>
-  )
-}
-
-function WildPoints({ navigation }) {
+function Tulokset() {
   return (
     <View></View>
   )
@@ -51,6 +38,8 @@ export default function App() {
         <Stack.Screen name="Punainen" component={RedPoints} />
         <Stack.Screen name="Keltainen" component={YellowPoints} />
         <Stack.Screen name="Extra" component={WildPoints} />
+        <Stack.Screen name="Loppupisteytys" component={FinalScores} />
+        <Stack.Screen name="Tulokset" component={Tulokset} />
       </Stack.Navigator>
     </NavigationContainer>
   );

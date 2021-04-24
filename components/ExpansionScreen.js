@@ -22,15 +22,16 @@ export default function ExpansionScreen({ navigation }) {
 
 
     const AppButton = () => (
-        <TouchableOpacity onPress={test} style={styles.appButtonContainerExpansion}>
+        <TouchableOpacity onPress={nextScreen} style={styles.appButtonContainerExpansion}>
             <Text style={styles.appButtonText}>{title}</Text>
         </TouchableOpacity>
     );
 
-    const test = () => {
-        console.log(enabledKirkot);
-        console.log(enabledKirjurit);
-        navigation.navigate("Laskuri");
+    const nextScreen = () => {
+        navigation.navigate("Laskuri", {
+            kirjurit: enabledKirjurit,
+            kirkot: enabledKirkot,
+        });
     }
 
     if (!fontsLoaded) {

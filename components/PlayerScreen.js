@@ -26,15 +26,25 @@ export default function PlayerScreen({ navigation }) {
     useEffect(() => {
         db.transaction(tx => {
             tx.executeSql('drop table players;');
+            tx.executeSql('drop table bluepoints;');
+            tx.executeSql('drop table greenpoints;');
+            tx.executeSql('drop table blackpoints;');
+            tx.executeSql('drop table redpoints;');
+            tx.executeSql('drop table yellowpoints;');
+            tx.executeSql('drop table wildpoints;');
         }, updateList);
 
     }, []);
 
     useEffect(() => {
         db.transaction(tx => {
-            tx.executeSql('create table if not exists players (id integer primary key not null, score int, name text, votes int, color text);');
+            tx.executeSql('create table if not exists players (id integer primary key not null, score int, name text, votes int, color text unique);');
             tx.executeSql('create table if not exists bluepoints (id integer primary key not null, feature text, score int, color text);');
             tx.executeSql('create table if not exists greenpoints (id integer primary key not null, feature text, score int, color text);');
+            tx.executeSql('create table if not exists blackpoints (id integer primary key not null, feature text, score int, color text);');
+            tx.executeSql('create table if not exists redpoints (id integer primary key not null, feature text, score int, color text);');
+            tx.executeSql('create table if not exists yellowpoints (id integer primary key not null, feature text, score int, color text);');
+            tx.executeSql('create table if not exists wildpoints (id integer primary key not null, feature text, score int, color text);');
         }, updateList);
     }, []);
 

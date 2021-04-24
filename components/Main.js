@@ -6,8 +6,7 @@ import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from "@react-navigation/native";
 
-export default function Main({ navigation }) {
-
+export default function Main({ navigation, route }) {
     let [fontsLoaded] = useFonts({
         Fondamento_400Regular,
     });
@@ -40,29 +39,54 @@ export default function Main({ navigation }) {
         });
     }
 
+    const finalPoints = () => {
+        navigation.navigate("Loppupisteytys", {
+            kirjurit: route.params.kirjurit,
+            players: players,
+        })
+    }
+
     const AppButton = () => (
-        <TouchableOpacity onPress={console.log("Loppu")} style={styles.mainAppButtonContainer}>
+        <TouchableOpacity onPress={finalPoints} style={styles.mainAppButtonContainer}>
             <Text style={styles.mainAppButtonText}>{title}</Text>
         </TouchableOpacity>
     );
 
     const navigateBlue = () => {
-        navigation.navigate("Sininen");
+        navigation.navigate("Sininen", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
     const navigateGreen = () => {
-        navigation.navigate("Vihreä");
+        navigation.navigate("Vihreä", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
     const navigateBlack = () => {
-        navigation.navigate("Musta");
+        navigation.navigate("Musta", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
     const navigateRed = () => {
-        navigation.navigate("Punainen");
+        navigation.navigate("Punainen", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
     const navigateYellow = () => {
-        navigation.navigate("Keltainen");
+        navigation.navigate("Keltainen", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
     const navigateWild = () => {
-        navigation.navigate("Extra");
+        navigation.navigate("Extra", {
+            kirkot: route.params.kirkot,
+            kirjurit: route.params.kirjurit,
+        });
     }
 
     if (!fontsLoaded) {

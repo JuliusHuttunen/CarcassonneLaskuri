@@ -4,7 +4,7 @@ import * as SQLite from 'expo-sqlite';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
 
-export default function BluePoints({ navigation, route }) {
+export default function BlackPoints({ navigation, route }) {
 
   const db = SQLite.openDatabase('laskuri.db');
   const [player, setPlayer] = useState([]);
@@ -23,7 +23,7 @@ export default function BluePoints({ navigation, route }) {
 
   useEffect(() => {
     db.transaction(tx => {
-      tx.executeSql('select * from bluepoints order by id desc;', [], (_, { rows }) =>
+      tx.executeSql('select * from blackpoints order by id desc;', [], (_, { rows }) =>
         setPlayer(rows._array)
       );
     }, null, updateList, updateScore);
@@ -31,16 +31,16 @@ export default function BluePoints({ navigation, route }) {
 
   const saveTown = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
-        ['Kaupunki', parseInt(scoreTown * 2), 'blue']);
+      tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+        ['Kaupunki', parseInt(scoreTown * 2), 'black']);
     }, null, updateList
     )
   }
 
   const saveInn = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
-        ['Kievaritie', parseInt(scoreInn * 2), 'blue']);
+      tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+        ['Kievaritie', parseInt(scoreInn * 2), 'black']);
     }, null, updateList
     )
     setKievariVisible(!kievariVisible);
@@ -48,24 +48,24 @@ export default function BluePoints({ navigation, route }) {
 
   const saveRoad = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
-        ['Tie', parseInt(scoreRoad), 'blue']);
+      tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+        ['Tie', parseInt(scoreRoad), 'black']);
     }, null, updateList
     )
   }
 
   const saveMonastery = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
-        ['Luostari', parseInt(scoreMonastery), 'blue']);
+      tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+        ['Luostari', parseInt(scoreMonastery), 'black']);
     }, null, updateList
     )
   }
 
   const saveCathedral = () => {
     db.transaction(tx => {
-      tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
-        ['Suurkatedraali', parseInt(scoreCathedral * 3), 'blue']);
+      tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+        ['Suurkatedraali', parseInt(scoreCathedral * 3), 'black']);
     }, null, updateList
     )
     setKirkkoVisible(!kirkkoVisible);
@@ -74,14 +74,14 @@ export default function BluePoints({ navigation, route }) {
   const deleteItem = (id) => {
     db.transaction(
       tx => {
-        tx.executeSql(`delete from bluepoints where id = ?;`, [id]);
+        tx.executeSql(`delete from blackpoints where id = ?;`, [id]);
       }, null, updateList
     )
   }
 
   const updateList = () => {
     db.transaction(tx => {
-      tx.executeSql('select * from bluepoints order by id desc;', [], (_, { rows }) =>
+      tx.executeSql('select * from blackpoints order by id desc;', [], (_, { rows }) =>
         setPlayer(rows._array)
       );
     }, null, updateScore
@@ -90,7 +90,7 @@ export default function BluePoints({ navigation, route }) {
 
   const updateScore = () => {
     db.transaction(tx => {
-      tx.executeSql('select sum(score) as finalpoints from bluepoints;', [], (_, { rows }) =>
+      tx.executeSql('select sum(score) as finalpoints from blackpoints;', [], (_, { rows }) =>
         setFinalScore(rows.item(0).finalpoints)
       );
     }, null, updatePlayer
@@ -181,7 +181,7 @@ export default function BluePoints({ navigation, route }) {
   const updatePlayer = () => {
     if (!finalScore == "0") {
       db.transaction(tx => {
-        tx.executeSql('update players set score = ? where color="blue";',
+        tx.executeSql('update players set score = ? where color="black";',
           [finalScore]);
       }
       )
@@ -189,7 +189,7 @@ export default function BluePoints({ navigation, route }) {
     else {
       {
         db.transaction(tx => {
-          tx.executeSql('update players set score = ? where color="blue";',
+          tx.executeSql('update players set score = ? where color="black";',
             [0]);
         }
         )
@@ -229,7 +229,7 @@ export default function BluePoints({ navigation, route }) {
       source={require("../img/starttile1_edit_blur.jpg")}>
       <View style={styles.pointcontainer}>
         <View style={styles.featureWrapper}>
-          <Text style={styles.pointsheader}>Sininen</Text>
+          <Text style={styles.pointsheader}>Musta</Text>
           <View style={styles.playerFeatureWrapper}>
             <Image style={styles.city} source={require("../img/city.png")} />
             <TextInput style={styles.playerinput} keyboardType="numeric" min="0" placeholder='Laattojen määrä:' onChangeText={(scoreTown) => setScoreTown(scoreTown)}
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 30,
     fontFamily: 'Fondamento_400Regular',
-    color: "#00445e",
+    color: "#000000",
     textAlign: "center"
   },
 
@@ -387,10 +387,10 @@ const styles = StyleSheet.create({
   },
   buttonOpen: {
     margin: 5,
-    backgroundColor: "#145FB8",
+    backgroundColor: "#000000",
   },
   buttonClose: {
-    backgroundColor: "#145FB8",
+    backgroundColor: "#000000",
     margin: 5
   },
   textStyle: {
