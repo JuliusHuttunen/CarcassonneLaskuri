@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, FlatList, Image, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, FlatList, Image, TextInput, Button, Modal, Pressable } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import AppLoading from 'expo-app-loading';
 import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
@@ -34,6 +34,12 @@ export default function Main({ navigation, route }) {
     const [finalWildScore, setFinalWildScore] = useState("0");
     const db = SQLite.openDatabase('laskuri.db');
     const title = "Tulokset";
+
+    const [kauppaVisible, setKauppaVisible] = useState(false);
+    const [possuVisible, setPossuVisible] = useState(false);
+
+    const [scorePossu, setScorePossu] = useState("0");
+    const [scoreKauppa, setScoreKauppa] = useState("0");
 
     //Vanha metodi
     /*useEffect(() => {
@@ -210,6 +216,93 @@ export default function Main({ navigation, route }) {
         )
     }
 
+    const savePossu = () => {
+
+    }
+
+    const saveKauppa = () => {
+
+    }
+
+    const KauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(scoreKauppa) => setScoreKauppa(scoreKauppa)}
+                                        value={scoreKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const PossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(scorePossu) => setScorePossu(scorePossu)}
+                                        value={scorePossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={savePossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
 
     const finalPoints = () => {
         saveBlue();
@@ -248,8 +341,10 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.bluePlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blueScore) => setBlueScore(blueScore)}
                                         value={blueScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blueField) => setBlueField(blueField)}
-                                            value={blueField} /></View>
+                                            value={blueField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View></View>
                                 </View>
+
                             )
                         }
                         if (item.color == 'green') {
@@ -258,7 +353,9 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.greenPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(greenScore) => setGreenScore(greenScore)}
                                         value={greenScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(greenField) => setGreenField(greenField)}
-                                            value={greenField} /></View>
+                                            value={greenField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View></View>
+
                                 </View>
                             )
                         }
@@ -268,7 +365,10 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.blackPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blackScore) => setBlackScore(blackScore)}
                                         value={blackScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blackField) => setBlackField(blackField)}
-                                            value={blackField} /></View>
+                                            value={blackField} />
+                                        <View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View>
+                                    </View>
                                 </View>
                             )
                         }
@@ -278,7 +378,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.redPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(redScore) => setRedScore(redScore)}
                                         value={redScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(redField) => setRedField(redField)}
-                                            value={redField} /></View>
+                                            value={redField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View></View>
                                 </View>
                             )
                         }
@@ -288,7 +389,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.yellowPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(yellowScore) => setYellowScore(yellowScore)}
                                         value={yellowScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(yellowField) => setYellowField(yellowField)}
-                                            value={yellowField} /></View>
+                                            value={yellowField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View></View>
                                 </View>
                             )
                         }
@@ -299,7 +401,8 @@ export default function Main({ navigation, route }) {
                                         style={styles.wildPlayer} colors={['#d673be', '#8a8f8b']}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(wildScore) => setWildScore(wildScore)}
                                             value={wildScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(wildField) => setWildField(wildField)}
-                                            value={wildField} /></LinearGradient></View>
+                                            value={wildField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
+                                            <KauppaInput></KauppaInput></View></LinearGradient></View>
                                 </View>
                             )
                         }
@@ -334,7 +437,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -344,7 +447,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -354,7 +457,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -364,7 +467,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -374,7 +477,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -383,7 +486,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 300,
         flex: 1,
-        height: 150,
+        height: 200,
         margin: 5,
         borderRadius: 10,
     },
@@ -501,4 +604,68 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 10
     },
+    //Modalin tyylit
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        flexDirection: "row",
+        margin: 5
+    },
+    modalView: {
+        flexDirection: "row",
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 5,
+        padding: 20,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 5,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        margin: 5,
+        backgroundColor: "#fff",
+    },
+    buttonClose: {
+        backgroundColor: "#fff",
+        margin: 5
+    },
+    textStyle: {
+        color: "#000",
+        textAlign: "center",
+        fontFamily: 'Fondamento_400Regular',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    },
+    modalinput: {
+        borderColor: 'black',
+        borderWidth: 1,
+        width: '50%',
+        borderRadius: 5,
+        backgroundColor: 'white',
+        margin: 10,
+        textAlign: 'center'
+    },
+    modalmonastery: {
+        width: 40,
+        height: 20,
+    },
+    modalshops: {
+        width: 40,
+        height: 40,
+    }
 })
