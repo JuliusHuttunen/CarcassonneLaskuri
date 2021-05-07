@@ -13,14 +13,9 @@ import RedPoints from "./components/RedPoints";
 import YellowPoints from "./components/YellowPoints";
 import WildPoints from "./components/WildPoints";
 import FinalScores from "./components/FinalScores";
+import End from "./components/End";
 
 const Stack = createStackNavigator();
-
-function Tulokset() {
-  return (
-    <View></View>
-  )
-}
 
 export default function App() {
   return (
@@ -39,7 +34,7 @@ export default function App() {
         <Stack.Screen name="Keltainen" component={YellowPoints} />
         <Stack.Screen name="Extra" component={WildPoints} />
         <Stack.Screen name="Loppupisteytys" component={FinalScores} />
-        <Stack.Screen name="Tulokset" component={Tulokset} />
+        <Stack.Screen name="Tulokset" component={End} />
       </Stack.Navigator>
     </NavigationContainer>
   );

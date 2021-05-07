@@ -6,6 +6,8 @@ import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from "@react-navigation/native";
 
+//Komponentissa 1200 riviä, refaktoroidaan tätä joskus...
+
 export default function Main({ navigation, route }) {
     let [fontsLoaded] = useFonts({
         Fondamento_400Regular,
@@ -38,8 +40,23 @@ export default function Main({ navigation, route }) {
     const [kauppaVisible, setKauppaVisible] = useState(false);
     const [possuVisible, setPossuVisible] = useState(false);
 
-    const [scorePossu, setScorePossu] = useState("0");
-    const [scoreKauppa, setScoreKauppa] = useState("0");
+    const [scoreBluePossu, setScoreBluePossu] = useState("0");
+    const [scoreBlueKauppa, setScoreBlueKauppa] = useState("0");
+
+    const [scoreGreenPossu, setScoreGreenPossu] = useState("0");
+    const [scoreGreenKauppa, setScoreGreenKauppa] = useState("0");
+
+    const [scoreBlackPossu, setScoreBlackPossu] = useState("0");
+    const [scoreBlackKauppa, setScoreBlackKauppa] = useState("0");
+
+    const [scoreRedPossu, setScoreRedPossu] = useState("0");
+    const [scoreRedKauppa, setScoreRedKauppa] = useState("0");
+
+    const [scoreYellowPossu, setScoreYellowPossu] = useState("0");
+    const [scoreYellowKauppa, setScoreYellowKauppa] = useState("0");
+
+    const [scoreWildPossu, setScoreWildPossu] = useState("0");
+    const [scoreWildKauppa, setScoreWildKauppa] = useState("0");
 
     //Vanha metodi
     /*useEffect(() => {
@@ -216,15 +233,126 @@ export default function Main({ navigation, route }) {
         )
     }
 
-    const savePossu = () => {
 
+    //SININEN PELAAJA
+    const saveBluePossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreBluePossu * 4), 'blue']);
+        }, null, updateBlueScore
+        )
+        setPossuVisible(!possuVisible);
     }
 
-    const saveKauppa = () => {
-
+    const saveBlueKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into bluepoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreBlueKauppa * 10), 'blue']);
+        }, null, updateBlueScore
+        )
+        setKauppaVisible(!kauppaVisible);
     }
 
-    const KauppaInput = () => {
+
+    //VIHREÄ PELAAJA
+    const saveGreenPossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreGreenPossu * 4), 'green']);
+        }, null, updateGreenScore
+        )
+        setPossuVisible(!possuVisible);
+    }
+
+    const saveGreenKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into greenpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreGreenKauppa * 10), 'green']);
+        }, null, updateGreenScore
+        )
+        setKauppaVisible(!kauppaVisible);
+    }
+
+    //MUSTA PELAAJA
+    const saveBlackPossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreBlackPossu * 4), 'black']);
+        }, null, updateBlackScore
+        )
+        setPossuVisible(!possuVisible);
+    }
+
+    const saveBlackKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into blackpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreBlackKauppa * 10), 'black']);
+        }, null, updateBlackScore
+        )
+        setKauppaVisible(!kauppaVisible);
+    }
+
+    //PUNAINEN PELAAJA
+    const saveRedPossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreRedPossu * 4), 'red']);
+        }, null, updateRedScore
+        )
+        setPossuVisible(!possuVisible);
+    }
+
+    const saveRedKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into redpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreRedKauppa * 10), 'red']);
+        }, null, updateRedScore
+        )
+        setKauppaVisible(!kauppaVisible);
+    }
+
+    //KELTAINEN PELAAJA
+    const saveYellowPossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into yellowpoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreYellowPossu * 4), 'yellow']);
+        }, null, updateYellowScore
+        )
+        setPossuVisible(!possuVisible);
+    }
+
+    const saveYellowKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into yellowpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreYellowKauppa * 10), 'yellow']);
+        }, null, updateYellowScore
+        )
+        setKauppaVisible(!kauppaVisible);
+    }
+
+    //EXTRA PELAAJA
+    const saveWildPossu = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into wildpoints (feature, score, color) values (?, ?, ?);',
+                ['Possupelto', parseInt(scoreWildPossu * 4), 'wild']);
+        }, null, updateWildScore
+        )
+        setPossuVisible(!possuVisible);
+    }
+
+    const saveWildKauppa = () => {
+        db.transaction(tx => {
+            tx.executeSql('insert into wildpoints (feature, score, color) values (?, ?, ?);',
+                ['Kaupat', parseInt(scoreWildKauppa * 10), 'wild']);
+        }, null, updateWildScore
+        )
+        setKauppaVisible(!kauppaVisible);
+    }
+
+
+
+    //SININEN PELAAJA
+    const BlueKauppaInput = () => {
         if (route.params.kirjurit) {
             return (
                 <View>
@@ -238,11 +366,11 @@ export default function Main({ navigation, route }) {
                             }}><View style={styles.centeredView}>
                                 <View style={styles.modalView}>
                                     <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
-                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(scoreKauppa) => setScoreKauppa(scoreKauppa)}
-                                        value={scoreKauppa} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreBlueKauppa) => setScoreBlueKauppa(scoreBlueKauppa)}
+                                        value={scoreBlueKauppa} />
                                     <Pressable
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={saveKauppa}
+                                        onPress={saveBlueKauppa}
                                     >
                                         <Text style={styles.textStyle}>Tallenna</Text>
                                     </Pressable>
@@ -264,7 +392,7 @@ export default function Main({ navigation, route }) {
         }
     }
 
-    const PossuInput = () => {
+    const BluePossuInput = () => {
         if (route.params.kirjurit) {
             return (
                 <View>
@@ -278,11 +406,11 @@ export default function Main({ navigation, route }) {
                             }}><View style={styles.centeredView}>
                                 <View style={styles.modalView}>
                                     <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
-                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(scorePossu) => setScorePossu(scorePossu)}
-                                        value={scorePossu} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreBluePossu) => setScoreBluePossu(scoreBluePossu)}
+                                        value={scoreBluePossu} />
                                     <Pressable
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={savePossu}
+                                        onPress={saveBluePossu}
                                     >
                                         <Text style={styles.textStyle}>Tallenna</Text>
                                     </Pressable>
@@ -304,6 +432,413 @@ export default function Main({ navigation, route }) {
         }
     }
 
+    //VIHREÄ PELAAJA
+    const GreenKauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreGreenKauppa) => setScoreGreenKauppa(scoreGreenKauppa)}
+                                        value={scoreGreenKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveGreenKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const GreenPossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreGreenPossu) => setScoreGreenPossu(scoreGreenPossu)}
+                                        value={scoreGreenPossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveGreenPossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    //MUSTA PELAAJA
+    const BlackKauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreBlackKauppa) => setScoreBlackKauppa(scoreBlackKauppa)}
+                                        value={scoreBlackKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveBlackKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const BlackPossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreBlackPossu) => setScoreBlackPossu(scoreBlackPossu)}
+                                        value={scoreBlackPossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveBlackPossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    //PUNAINEN PELAAJA
+    const RedKauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreRedKauppa) => setScoreRedKauppa(scoreRedKauppa)}
+                                        value={scoreRedKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveRedKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const RedPossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreRedPossu) => setScoreRedPossu(scoreRedPossu)}
+                                        value={scoreRedPossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveRedPossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+
+    //KELTAINEN PELAAJA
+    const YellowKauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreYellowKauppa) => setScoreYellowKauppa(scoreYellowKauppa)}
+                                        value={scoreYellowKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveYellowKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const YellowPossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreYellowPossu) => setScoreYellowPossu(scoreYellowPossu)}
+                                        value={scoreYellowPossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveYellowPossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    //EXTRA PELAAJA
+    const WildKauppaInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={kauppaVisible}
+                            onRequestClose={() => {
+                                setKauppaVisible(!kauppaVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalshops} source={require("../img/carcassonne_icons_kaari.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Voitetut kaupat:' onChangeText={(scoreWildKauppa) => setScoreWildKauppa(scoreWildKauppa)}
+                                        value={scoreWildKauppa} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveWildKauppa}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setKauppaVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Kaupat</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    const WildPossuInput = () => {
+        if (route.params.kirjurit) {
+            return (
+                <View>
+                    <View>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={possuVisible}
+                            onRequestClose={() => {
+                                setPossuVisible(!possuVisible);
+                            }}><View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image style={styles.modalmonastery} source={require("../img/carcassonne_icons_possu.png")} />
+                                    <TextInput style={styles.modalinput} keyboardType="numeric" placeholder='Kaupungit:' onChangeText={(scoreWildPossu) => setScoreWildPossu(scoreWildPossu)}
+                                        value={scoreWildPossu} />
+                                    <Pressable
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={saveWildPossu}
+                                    >
+                                        <Text style={styles.textStyle}>Tallenna</Text>
+                                    </Pressable>
+                                </View>
+                            </View>
+                        </Modal>
+                    </View>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setPossuVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Possupelto</Text>
+                    </Pressable>
+                </View>
+            )
+        }
+        else {
+            return null
+        }
+    }
+
+    //TALLENNETAAN TULOKSET:
     const finalPoints = () => {
         saveBlue();
         saveGreen();
@@ -341,8 +876,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.bluePlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blueScore) => setBlueScore(blueScore)}
                                         value={blueScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blueField) => setBlueField(blueField)}
-                                            value={blueField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View></View>
+                                            value={blueField} /><View style={{ flexDirection: "row" }}><BluePossuInput></BluePossuInput>
+                                            <BlueKauppaInput></BlueKauppaInput></View></View>
                                 </View>
 
                             )
@@ -353,8 +888,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.greenPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(greenScore) => setGreenScore(greenScore)}
                                         value={greenScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(greenField) => setGreenField(greenField)}
-                                            value={greenField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View></View>
+                                            value={greenField} /><View style={{ flexDirection: "row" }}><GreenPossuInput></GreenPossuInput>
+                                            <GreenKauppaInput></GreenKauppaInput></View></View>
 
                                 </View>
                             )
@@ -366,8 +901,8 @@ export default function Main({ navigation, route }) {
                                         value={blackScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(blackField) => setBlackField(blackField)}
                                             value={blackField} />
-                                        <View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View>
+                                        <View style={{ flexDirection: "row" }}><BlackPossuInput></BlackPossuInput>
+                                            <BlackKauppaInput></BlackKauppaInput></View>
                                     </View>
                                 </View>
                             )
@@ -378,8 +913,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.redPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(redScore) => setRedScore(redScore)}
                                         value={redScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(redField) => setRedField(redField)}
-                                            value={redField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View></View>
+                                            value={redField} /><View style={{ flexDirection: "row" }}><RedPossuInput></RedPossuInput>
+                                            <RedKauppaInput></RedKauppaInput></View></View>
                                 </View>
                             )
                         }
@@ -389,8 +924,8 @@ export default function Main({ navigation, route }) {
                                     <View style={styles.yellowPlayer}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(yellowScore) => setYellowScore(yellowScore)}
                                         value={yellowScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(yellowField) => setYellowField(yellowField)}
-                                            value={yellowField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View></View>
+                                            value={yellowField} /><View style={{ flexDirection: "row" }}><YellowPossuInput></YellowPossuInput>
+                                            <YellowKauppaInput></YellowKauppaInput></View></View>
                                 </View>
                             )
                         }
@@ -401,8 +936,8 @@ export default function Main({ navigation, route }) {
                                         style={styles.wildPlayer} colors={['#d673be', '#8a8f8b']}><Text style={styles.playersText}>Keskeneräisiä:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(wildScore) => setWildScore(wildScore)}
                                             value={wildScore} />
                                         <Text style={styles.playersText}>Peltokaupungit:</Text><TextInput style={styles.playerinput} keyboardType="numeric" placeholder='Laattojen määrä:' onChangeText={(wildField) => setWildField(wildField)}
-                                            value={wildField} /><View style={{ flexDirection: "row" }}><PossuInput></PossuInput>
-                                            <KauppaInput></KauppaInput></View></LinearGradient></View>
+                                            value={wildField} /><View style={{ flexDirection: "row" }}><WildPossuInput></WildPossuInput>
+                                            <WildKauppaInput></WildKauppaInput></View></LinearGradient></View>
                                 </View>
                             )
                         }
