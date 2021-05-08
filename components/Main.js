@@ -42,8 +42,8 @@ export default function Main({ navigation, route }) {
     const finalPoints = () => {
         navigation.navigate("Loppupisteytys", {
             kirjurit: route.params.kirjurit,
-            players: players,
-        })
+            kirkot: route.params.kirkot,
+        });
     }
 
     const AppButton = () => (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, FlatList, Image, TextInput, Button, Modal, Pressable } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import AppLoading from 'expo-app-loading';
@@ -28,12 +28,12 @@ export default function Main({ navigation, route }) {
     const [yellowField, setYellowField] = useState("0");
     const [wildField, setWildField] = useState("0");
 
-    const [finalBlueScore, setFinalBlueScore] = useState("0");
-    const [finalGreenScore, setFinalGreenScore] = useState("0");
-    const [finalBlackScore, setFinalBlackScore] = useState("0");
-    const [finalRedScore, setFinalRedScore] = useState("0");
-    const [finalYellowScore, setFinalYellowScore] = useState("0");
-    const [finalWildScore, setFinalWildScore] = useState("0");
+    const [finalBlueScore, setFinalBlueScore] = useState(0);
+    const [finalGreenScore, setFinalGreenScore] = useState(0);
+    const [finalBlackScore, setFinalBlackScore] = useState(0);
+    const [finalRedScore, setFinalRedScore] = useState(0);
+    const [finalYellowScore, setFinalYellowScore] = useState(0);
+    const [finalWildScore, setFinalWildScore] = useState(0);
     const db = SQLite.openDatabase('laskuri.db');
     const title = "Tulokset";
 
@@ -58,30 +58,22 @@ export default function Main({ navigation, route }) {
     const [scoreWildPossu, setScoreWildPossu] = useState("0");
     const [scoreWildKauppa, setScoreWildKauppa] = useState("0");
 
-    //Vanha metodi
-    /*useEffect(() => {
+    useEffect(() => {
       db.transaction(tx => {
         tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
           setPlayers(rows._array)
         );
-      }, null, updateList);
-    }, []);*/
+      }, null, updateAll);
+    }, []);
 
-    useFocusEffect(React.useCallback(() => {
+    /* useFocusEffect(React.useCallback(() => {
         db.transaction(tx => {
             tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
                 setPlayers(rows._array)
             );
-        }, null, updateList);
-    }, []));
+        }, null, updateList, updateAll);
+    }, [])); */
 
-    const updateList = () => {
-        db.transaction(tx => {
-            tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
-                setPlayers(rows._array)
-            );
-        });
-    }
 
     const saveBlue = () => {
         db.transaction(tx => {
@@ -838,6 +830,27 @@ export default function Main({ navigation, route }) {
         }
     }
 
+    const updateAll = () => {
+        updateBlueScore();
+        updateGreenScore();
+        updateBlackScore();
+        updateRedScore();
+        updateYellowScore();
+        updateWildScore();
+    }
+
+    const navigate = () => {
+        navigation.navigate("Tulokset" , {
+            kirjurit: route.params.kirjurit,
+            kirkot: route.params.kirkot,
+        });
+    }
+
+    const navigateEnd = () => {
+        updateAll();
+        navigate();
+    }
+
     //TALLENNETAAN TULOKSET:
     const finalPoints = () => {
         saveBlue();
@@ -846,12 +859,17 @@ export default function Main({ navigation, route }) {
         saveRed();
         saveYellow();
         saveWild();
-        navigation.navigate("Tulokset");
-    }
+}
 
     const AppButton = () => (
         <TouchableOpacity onPress={finalPoints} style={styles.mainAppButtonContainer}>
-            <Text style={styles.mainAppButtonText}>{title}</Text>
+            <Text style={styles.mainAppButtonText}>Tallenna</Text>
+        </TouchableOpacity>
+    );
+
+    const NaviButton = () => (
+        <TouchableOpacity onPress={navigateEnd} style={styles.mainAppButtonContainer}>
+            <Text style={styles.mainAppButtonText}>Tulokset</Text>
         </TouchableOpacity>
     );
 
@@ -946,6 +964,9 @@ export default function Main({ navigation, route }) {
                 />
                 <View style={styles.mainButtonWrapper}>
                     <AppButton></AppButton>
+                </View>
+                <View style={styles.mainButtonWrapper}>
+                    <NaviButton></NaviButton>
                 </View>
             </View>
         </ImageBackground >
