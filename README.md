@@ -11,21 +11,21 @@ Työn alla Carcassonne-lautapelin kanssa käytettävä pistelaskuri. Sisältää
 ![laskuri4](https://user-images.githubusercontent.com/63333652/116533519-2286b800-a8ea-11eb-8439-e6643519d0fa.PNG)
 
 ## Käytetyt teknologiat ja kirjastot
-*React Native
-*Expo
-*Expo SQLite
-*Google Fonts
-*React Navigation
-*Expo AppLoading
-*jne...
-*GIMP (Kuvankäsittely)
-*Figma (UI-suunnittelu)
+* React Native
+* Expo
+* Expo SQLite
+* Google Fonts
+* React Navigation
+* Expo AppLoading
+* jne...
+* GIMP (Kuvankäsittely)
+* Figma (UI-suunnittelu)
 
 ## Mahdolliset tulevat ominaisuudet
-*Laaja tuki kaikille pelin lisäosille
-*Pelattujen pelien tallennus
-*Äänestyssysteemi
-*Korjauksia sovelluksen toimivuuteen
+* Laaja tuki kaikille pelin lisäosille
+* Pelattujen pelien tallennus
+* Äänestyssysteemi
+* Korjauksia sovelluksen toimivuuteen
 
 
 
