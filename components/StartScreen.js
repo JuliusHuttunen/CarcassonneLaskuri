@@ -11,13 +11,13 @@ export default function StartScreen({ navigation }) {
     });
 
     const startTitle = "Uusi peli";
-    const historyTitle = "Menneet pelit";
+    const historyTitle = "Viimeisin peli";
 
     const startCounter = () => {
         navigation.navigate("Pelaajat");
     }
     const showHistory = () => {
-        console.log("Historia")
+        navigation.navigate("Historia");
     }
 
     const StartButton = () => (

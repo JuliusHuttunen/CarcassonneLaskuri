@@ -59,12 +59,20 @@ export default function Main({ navigation, route }) {
     const [scoreWildKauppa, setScoreWildKauppa] = useState("0");
 
     useEffect(() => {
-      db.transaction(tx => {
-        tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
-          setPlayers(rows._array)
-        );
-      }, null, updateAll);
+        db.transaction(tx => {
+            tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
+                setPlayers(rows._array)
+            );
+        }, null, updateList, updateAll);
     }, []);
+
+    const updateList = () => {
+        db.transaction(tx => {
+            tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
+                setPlayers(rows._array)
+            );
+        }, updateAll);
+    }
 
     /* useFocusEffect(React.useCallback(() => {
         db.transaction(tx => {
@@ -840,7 +848,7 @@ export default function Main({ navigation, route }) {
     }
 
     const navigate = () => {
-        navigation.navigate("Tulokset" , {
+        navigation.navigate("Tulokset", {
             kirjurit: route.params.kirjurit,
             kirkot: route.params.kirkot,
         });
@@ -848,7 +856,8 @@ export default function Main({ navigation, route }) {
 
     const navigateEnd = () => {
         updateAll();
-        navigate();
+        //Odota, että päivittää
+        setTimeout(() => { navigate() }, 1000);
     }
 
     //TALLENNETAAN TULOKSET:
@@ -859,7 +868,8 @@ export default function Main({ navigation, route }) {
         saveRed();
         saveYellow();
         saveWild();
-}
+        updateAll();
+    }
 
     const AppButton = () => (
         <TouchableOpacity onPress={finalPoints} style={styles.mainAppButtonContainer}>

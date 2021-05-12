@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import StartScreen from "./components/StartScreen";
@@ -14,6 +13,7 @@ import YellowPoints from "./components/YellowPoints";
 import WildPoints from "./components/WildPoints";
 import FinalScores from "./components/FinalScores";
 import End from "./components/End";
+import GameHistory from "./components/GameHistory";
 
 const Stack = createStackNavigator();
 
@@ -24,6 +24,7 @@ export default function App() {
         headerShown: false
       }}>
         <Stack.Screen name="Alkuvalikko" component={StartScreen} />
+        <Stack.Screen name="Historia" component={GameHistory} />
         <Stack.Screen name="Pelaajat" component={PlayerScreen} />
         <Stack.Screen name="Lisäosat" component={ExpansionScreen} />
         <Stack.Screen name="Laskuri" component={Main} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import AppLoading from 'expo-app-loading';
@@ -6,27 +6,22 @@ import { useFonts, Fondamento_400Regular } from '@expo-google-fonts/fondamento';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from "@react-navigation/native";
 
-export default function End({ navigation }) {
+export default function Main({ navigation }) {
     let [fontsLoaded] = useFonts({
         Fondamento_400Regular,
     });
     const [players, setPlayers] = useState([]);
-    const [blue, setBlue] = useState();
-    const [green, setGreen] = useState();
-    const [black, setBlack] = useState();
-    const [red, setRed] = useState();
-    const [yellow, setYellow] = useState();
-    const [wild, setWild] = useState();
     const db = SQLite.openDatabase('laskuri.db');
-    const title = "Takaisin alkuun";
+    const title = "Takaisin";
 
-    /* useEffect(() => {
-        db.transaction(tx => {
-            tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
-                setPlayers(rows._array)
-            );
-        }, null, updateList);
-    }, []);  */
+    //Vanha metodi
+    /*useEffect(() => {
+      db.transaction(tx => {
+        tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
+          setPlayers(rows._array)
+        );
+      }, null, updateList);
+    }, []);*/
 
     useFocusEffect(React.useCallback(() => {
         db.transaction(tx => {
@@ -41,104 +36,29 @@ export default function End({ navigation }) {
             tx.executeSql('select * from players order by score desc;', [], (_, { rows }) =>
                 setPlayers(rows._array)
             );
-        }, null, mostPoints);
+        }, null, console.log(players));
     }
 
-    const mostPoints = () => {
-        mostBlue();
-        mostGreen();
-        mostBlack();
-        mostRed();
-        mostYellow();
-        mostWild();
-    }
-
-    const check = () => {
-    }
-
-    const mostBlue = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from bluepoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setBlue(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mostGreen = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from greenpoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setGreen(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mostBlack = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from blackpoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setBlack(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mostRed = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from redpoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setRed(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mostYellow = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from yellowpoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setYellow(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mostWild = () => {
-        db.transaction(tx => {
-            tx.executeSql('select feature from wildpoints group by feature order by COUNT(*) desc limit 1;', [], (_, { rows }) =>
-                setWild(rows.item(0).feature)
-            );
-        });
-    }
-
-    const mainMenu = () => {
-        navigation.navigate("Alkuvalikko", {
-        })
+    const finalPoints = () => {
+        navigation.navigate("Alkuvalikko");
     }
 
     const AppButton = () => (
-        <TouchableOpacity onPress={mainMenu} style={styles.mainAppButtonContainer}>
+        <TouchableOpacity onPress={finalPoints} style={styles.mainAppButtonContainer}>
             <Text style={styles.mainAppButtonText}>{title}</Text>
         </TouchableOpacity>
     );
 
-    const SaveButton = () => (
-        <TouchableOpacity onPress={save} style={styles.mainAppButtonContainer}>
-            <Text style={styles.mainAppButtonText}>Tallenna tulokset</Text>
-        </TouchableOpacity>
-    );
-
-    const save = () => {
-
-    }
-
     const navigateBlue = () => {
     }
-
     const navigateGreen = () => {
     }
-
     const navigateBlack = () => {
     }
     const navigateRed = () => {
     }
-
     const navigateYellow = () => {
     }
-
     const navigateWild = () => {
     }
 
@@ -153,43 +73,40 @@ export default function End({ navigation }) {
             resizeMode='cover'
             source={require("../img/starttile1_edit_blur.jpg")}>
             <View style={styles.counterContainer}>
-                <Text style={styles.header}>Tulokset</Text>
-
-
+                <Text style={styles.header}>Pisteet</Text>
                 <FlatList
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item }) => {
                         if (item.color == 'blue') {
                             return (
-                                <TouchableOpacity style={styles.bluePlayer} onPress={navigateBlue}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text><Text style={styles.playersTextSmall}>{blue}</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.bluePlayer} onPress={navigateBlue}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></TouchableOpacity>
                             )
                         }
                         if (item.color == 'green') {
                             return (
-                                <TouchableOpacity style={styles.greenPlayer} onPress={navigateGreen}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text>
-                                    <Text style={styles.playersTextSmall}>{green}</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.greenPlayer} onPress={navigateGreen}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></TouchableOpacity>
                             )
                         }
                         if (item.color == 'black') {
                             return (
-                                <TouchableOpacity style={styles.blackPlayer} onPress={navigateBlack}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text><Text style={styles.playersTextSmall}>{black}</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.blackPlayer} onPress={navigateBlack}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></TouchableOpacity>
                             )
                         }
                         if (item.color == 'red') {
                             return (
-                                <TouchableOpacity style={styles.redPlayer} onPress={navigateRed}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text><Text style={styles.playersTextSmall}>{red}</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.redPlayer} onPress={navigateRed}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></TouchableOpacity>
                             )
                         }
                         if (item.color == 'yellow') {
                             return (
-                                <TouchableOpacity style={styles.yellowPlayer} onPress={navigateYellow}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text><Text style={styles.playersTextSmall}>{yellow}</Text></TouchableOpacity>
+                                <TouchableOpacity style={styles.yellowPlayer} onPress={navigateYellow}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></TouchableOpacity>
                             )
                         }
                         if (item.color == 'wild') {
                             return (
                                 <TouchableOpacity onPress={navigateWild}>
                                     <LinearGradient
-                                        style={styles.wildPlayer} colors={['#d673be', '#8a8f8b']}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text><Text style={styles.playersTextSmall}>{wild}</Text></LinearGradient></TouchableOpacity>
+                                        style={styles.wildPlayer} colors={['#d673be', '#8a8f8b']}><Text style={styles.playersText}>{item.name}</Text><Text style={styles.playersText}>{item.score}</Text></LinearGradient></TouchableOpacity>
                             )
                         }
                     }}
@@ -197,9 +114,6 @@ export default function End({ navigation }) {
                 />
                 <View style={styles.mainButtonWrapper}>
                     <AppButton></AppButton>
-                </View>
-                <View style={styles.mainButtonWrapper}>
-                    <SaveButton></SaveButton>
                 </View>
             </View>
         </ImageBackground >
@@ -281,15 +195,6 @@ const styles = StyleSheet.create({
     playersText: {
         fontFamily: 'Fondamento_400Regular',
         fontSize: 26,
-        margin: 10,
-        color: "white",
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 1,
-        textShadowColor: '#000',
-    },
-    playersTextSmall: {
-        fontFamily: 'Fondamento_400Regular',
-        fontSize: 20,
         margin: 10,
         color: "white",
         textShadowOffset: { width: 2, height: 2 },
